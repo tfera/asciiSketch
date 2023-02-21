@@ -1,1 +1,1 @@
-# All online documentation specific to image files will go here
+# All documentation-bound image files will go here.
