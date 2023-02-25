@@ -22,9 +22,9 @@ def generateSelectables(root, buttonChars, buttonCharSize):
     return buttons
 
 # generate tkinter labels as a canvas
-def generateLabels(root, cLabelSize, width, height):
-    cLabels = []
+def generateCanvas(root, cButtonSize, width, height):
+    cButtons = []
     for lCanvas in range(height * width):
-        cLabels.append(tkinter.Label(root, text=" ", font="Monospace " + str(cLabelSize), bg="grey", width=3, height=2))
+        cButtons.append(tkinter.Button(root, text=" ", font="Monospace " + str(cButtonSize) + " bold", bg="#1c1c1c", fg="white", width=3, height=2))
     
-    return cLabels
+    return cButtons
