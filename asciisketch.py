@@ -43,6 +43,7 @@ def setCavnasTextToCurChar(canvasBlob):
       return
    canvasBlob['text'] = label_curSelected['text']
 
+
 #--------------------------#
 # Tkinter specific widgets #
 #--------------------------#
@@ -89,6 +90,7 @@ label_eraser = tkinter.Button(labelframe_selectable, text="DEL", font="Monospace
 label_eraser.grid(row = bCount, column = 0, columnspan = 2)
 #label_eraser.config(partial(changeCurChar, label_eraser['text']))
 label_eraser.config(command = partial(changeCurChar, label_eraser['text']))
+
 
 #------------------------------------#
 # Tkinter specific window properties #
