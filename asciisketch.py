@@ -22,9 +22,9 @@ from functools import partial
 #---------#
 
 root=tkinter.Tk() # toplevel window widget
-buttonChars    = "+-|_.'/\\#$*><xo" # what characters to use to populate buttons
-buttonCharSize = 14 # size of character selection buttons (font size)
-cLabelSize     = 12 # size of canvas labels (font size)
+buttonChars    = "+-()|_.'/\\#$*><xo^\"" # what characters to use to populate buttons
+buttonCharSize = 12 # size of character selection buttons (font size)
+cButtonSize    = 11 # size of canvas labels (font size)
 lWidth         = 28 # amount of canvas labels in width
 lHeight        = 16 # amount of canvas labels in height
 
@@ -37,6 +37,11 @@ lHeight        = 16 # amount of canvas labels in height
 def changeCurChar(char):
    label_curSelected.config(text = char)
 
+def setCavnasTextToCurChar(canvasBlob):
+   if label_curSelected['text'] == "DEL":
+      canvasBlob['text'] = " "
+      return
+   canvasBlob['text'] = label_curSelected['text']
 
 #--------------------------#
 # Tkinter specific widgets #
@@ -66,15 +71,24 @@ for bChar in buttons:
     bChar.config(command = partial(changeCurChar, bChar['text']))
     bCount += 1
 
-# create labels to "draw" to with the currently seleceted
+# create labels to "draw" to with the currently selected
 labelframe_canvas = tkinter.LabelFrame(root, text="Canvas")
 labelframe_canvas.grid(row = 1, column = 1, rowspan = 10, sticky = tkinter.NW)
 
-canvas = as_generators.generateLabels(labelframe_canvas, cLabelSize, lWidth, lHeight)
+canvas = as_generators.generateCanvas(labelframe_canvas, cButtonSize, lWidth, lHeight)
 cCount = 0
 for c in canvas:
-    c.grid(row = 3 + cCount // lWidth, column = 3 + cCount % lWidth, padx = 1, pady = 1)
+    c.grid(row = 3 + cCount // lWidth, column = 3 + cCount % lWidth)
+    #c.bind("<Button-1>", lambda e:setCavnasTextToCurChar(c, label_curSelected['text'])) # bind to event -> change text property to current label_curSelected's text
+    c.config(command = partial(setCavnasTextToCurChar, c))
     cCount += 1
+
+# create a label for the eraser tool
+
+label_eraser = tkinter.Button(labelframe_selectable, text="DEL", font="Monospace " + str(buttonCharSize), bg="grey", width=4)
+label_eraser.grid(row = bCount, column = 0, columnspan = 2)
+#label_eraser.config(partial(changeCurChar, label_eraser['text']))
+label_eraser.config(command = partial(changeCurChar, label_eraser['text']))
 
 #------------------------------------#
 # Tkinter specific window properties #
@@ -83,5 +97,5 @@ for c in canvas:
 root.title("asciiSketch")
 
 root.minsize(650, 400)
-root.geometry("1075x775")
+root.geometry("1175x890")
 root.mainloop()
