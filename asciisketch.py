@@ -135,6 +135,6 @@ canvasResize.config(command = lambda : resetCanvasSize(widthEntry.get(), heightE
 
 root.title("asciiSketch")
 
-root.minsize(650, 400)
+root.minsize(350, 350)
 root.geometry("1175x890")
 root.mainloop()
