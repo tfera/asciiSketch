@@ -134,6 +134,7 @@ canvasResize = tkinter.Button(labelframe_changeCanvas, text="Resize Canvas")
 canvasResize.grid(row = 5, column = 0, sticky = tkinter.NW)
 canvasResize.config(command = lambda : resetCanvasSize(widthEntry.get(), heightEntry.get()))
 
+
 #------------------------------------#
 # Tkinter specific window properties #
 #------------------------------------#
