@@ -46,22 +46,17 @@ def setCavnasTextToCurChar(canvasBlob):
 
 # draw canvas again with
 def resetCanvasSize(width, height):
-    print(width, height)
     try:
         width  = int(width)
         height = int(height)
     except:
         return
-    print("triggered")
 
-    print(labelframe_canvas)
     for widget in labelframe_canvas.winfo_children():
         widget.destroy()
 
-    print(width, height)
     canvas = as_generators.generateCanvas(labelframe_canvas, cButtonSize, width, height)
     cCount = 0
-    print(len(canvas))
     for c in canvas:
         c.grid(row = cCount // width, column = cCount % width)
         c.config(command = partial(setCavnasTextToCurChar, c))
@@ -133,7 +128,6 @@ heightEntry.insert(10, str(lHeight))
 canvasResize = tkinter.Button(labelframe_changeCanvas, text="Resize Canvas")
 canvasResize.grid(row = 5, column = 0, sticky = tkinter.NW)
 canvasResize.config(command = lambda : resetCanvasSize(widthEntry.get(), heightEntry.get()))
-
 
 #------------------------------------#
 # Tkinter specific window properties #
