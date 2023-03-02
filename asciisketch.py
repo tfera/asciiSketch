@@ -54,6 +54,9 @@ def resetCanvasSize(width, height):
       return
 
    #set global widths to newly fethed width, needed for keeping track of canvas in other methods
+   global lWidth
+   global lHeight
+   
    lWidth  = width
    lHeight = height
 
@@ -98,17 +101,19 @@ def commitSave(fname, child):
       fo = open(fname, "w+")
       cCanvasCount = 1
       for button in labelframe_canvas.winfo_children():
-         print(button.cget('text'))
+         print(button.cget('text'), end="")
          fo.write(button.cget('text'))
          if(cCanvasCount % lWidth == 0 and cCanvasCount != 0):
             fo.write("\n")
+            print()
          cCanvasCount += 1
       messagebox.showinfo(title="Success", message="Successfully saved file!")
       
                   
    except:
       messagebox.showerror(title="Error", message="Could not save file...")
-      
+
+   fo.close()
    child.destroy()
 
 
