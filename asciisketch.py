@@ -46,21 +46,22 @@ def setCavnasTextToCurChar(canvasBlob):
 
 # draw canvas again with
 def resetCanvasSize(width, height):
-    try:
-        width  = int(width)
-        height = int(height)
-    except:
-        return
+   
+   try:
+      width  = int(width)
+      height = int(height)
+   except:
+      return
 
-    for widget in labelframe_canvas.winfo_children():
-        widget.destroy()
+   for widget in labelframe_canvas.winfo_children():
+      widget.destroy()
 
-    canvas = as_generators.generateCanvas(labelframe_canvas, cButtonSize, width, height)
-    cCount = 0
-    for c in canvas:
-        c.grid(row = cCount // width, column = cCount % width)
-        c.config(command = partial(setCavnasTextToCurChar, c))
-        cCount += 1
+   canvas = as_generators.generateCanvas(labelframe_canvas, cButtonSize, width, height)
+   cCount = 0
+   for c in canvas:
+      c.grid(row = cCount // width, column = cCount % width)
+      c.config(command = partial(setCavnasTextToCurChar, c))
+      cCount += 1
 
 
 #--------------------------#
@@ -98,9 +99,9 @@ labelframe_canvas.grid(row = 1, column = 1, rowspan = 10, sticky = tkinter.NW)
 canvas = as_generators.generateCanvas(labelframe_canvas, cButtonSize, lWidth, lHeight)
 cCount = 0
 for c in canvas:
-    c.grid(row = 3 + cCount // lWidth, column = 3 + cCount % lWidth)
-    c.config(command = partial(setCavnasTextToCurChar, c))
-    cCount += 1
+   c.grid(row = 3 + cCount // lWidth, column = 3 + cCount % lWidth)
+   c.config(command = partial(setCavnasTextToCurChar, c))
+   cCount += 1
 
 # create a label for the eraser tool
 label_eraser = tkinter.Button(labelframe_selectable, text="DEL", font="Monospace " + str(buttonCharSize), bg="grey", width=4)
