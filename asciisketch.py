@@ -53,7 +53,7 @@ def resetCanvasSize(width, height):
    except:
       return
 
-   #set global widths to newly fethed width, needed for keeping track of canvas in other methods
+   #set global widths to newly fetched width, needed for keeping track of canvas in other methods
    global lWidth
    global lHeight
    
