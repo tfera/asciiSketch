@@ -53,7 +53,7 @@ def resetCanvasSize(width, height):
    except:
       return
 
-   #set global widths to newly fetched width, needed for keeping track of canvas in other methods
+   #set global widths to newly fethed width, needed for keeping track of canvas in other methods
    global lWidth
    global lHeight
    
@@ -67,7 +67,7 @@ def resetCanvasSize(width, height):
    canvas = as_generators.generateCanvas(labelframe_canvas, cButtonSize, lWidth, lHeight)
    cCount = 0
    for c in canvas:
-      c.grid(row = 3 + cCount // lWidth, column = 3 + cCount % lWidth)
+      c.grid(row = cCount // lWidth, column = cCount % lWidth)
       c.config(command = partial(setCavnasTextToCurChar, c))
       cCount += 1
 
@@ -97,15 +97,12 @@ def configSave():
 
 def commitSave(fname, child):
    try:
-      print(canvas)
       fo = open(fname, "w+")
       cCanvasCount = 1
       for button in labelframe_canvas.winfo_children():
-         print(button.cget('text'), end="")
          fo.write(button.cget('text'))
          if(cCanvasCount % lWidth == 0 and cCanvasCount != 0):
             fo.write("\n")
-            print()
          cCanvasCount += 1
       messagebox.showinfo(title="Success", message="Successfully saved file!")
       
@@ -176,7 +173,7 @@ labelframe_canvas.grid(row = 1, column = 1, rowspan = 10, sticky = tkinter.NW)
 canvas = as_generators.generateCanvas(labelframe_canvas, cButtonSize, lWidth, lHeight)
 cCount = 0
 for c in canvas:
-   c.grid(row = 3 + cCount // lWidth, column = 3 + cCount % lWidth)
+   c.grid(row =cCount // lWidth, column =cCount % lWidth)
    c.config(command = partial(setCavnasTextToCurChar, c))
    cCount += 1
 
