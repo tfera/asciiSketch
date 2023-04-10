@@ -13,9 +13,13 @@ This source file will contain all non-library code for the project.
 #---------#
 
 import tkinter
+
 from tkinter import messagebox
-import as_generators
+from tkinter import filedialog
+
 from functools import partial
+
+import as_generators
 
 
 #---------#
@@ -27,9 +31,10 @@ buttonChars      = "+-()|_.'/\\#$*><xo^\"" # what characters to use to populate 
 buttonCharSize   = 12 # size of character selection buttons (font size)
 cButtonSize      = 11 # size of canvas labels (font size)
 lWidth           = 16 # amount of canvas labels in width
-lHeight          = 8 # amount of canvas labels in height
+lHeight          = 8  # amount of canvas labels in height
 widthSelectables = 4  # how many characters wide the current character selection on left is
-canvas = []
+canvas           = [] # collection of tkinter buttons where its [text] property is char in question
+
 
 #-----------#
 # Functions #
@@ -51,19 +56,20 @@ def resetCanvasSize(width, height):
       width  = int(width)
       height = int(height)
    except:
-      return
+      return # TODO: add handling on non-int input
 
-   #set global widths to newly fethed width, needed for keeping track of canvas in other methods
+   # set global widths to newly fethed width, needed for keeping track of canvas in other methods
    global lWidth
    global lHeight
    
    lWidth  = width
    lHeight = height
 
-   #iterate over all buttons in the canvas labelframe and kill
+   # iterate over all buttons in the canvas labelframe and kill
    for button in labelframe_canvas.winfo_children():
       button.destroy()
 
+   global canvas
    canvas = as_generators.generateCanvas(labelframe_canvas, cButtonSize, lWidth, lHeight)
    cCount = 0
    for c in canvas:
@@ -71,8 +77,30 @@ def resetCanvasSize(width, height):
       c.config(command = partial(setCavnasTextToCurChar, c))
       cCount += 1
 
+# load a file into the current asciiSketch instance
 def loadSave():
-   pass
+    filePath = filedialog.askopenfilename()
+
+    # open file from file path, readlines, then push to canvas if within scope
+    # TODO: change canvas size before pushing to canvas (chars may be lost)
+    lines = []
+    try:
+        fo = open(filePath, "r")
+        lines = fo.readlines()
+        fo.close()
+    except:
+        # TODO: add handling on bad file input (usb removal, drive failure, unmount, etc...)
+        return
+
+    # if we have content, push to canvas
+    if lines != []:
+        for cLine in range(len(lines)):
+            if(cLine < lHeight): # limit to canvas height in the case of a larger .txt height
+                charCount = 0
+                for char in lines[cLine]:
+                    if(charCount < lWidth): # limit to canvas width in the case of a larger .txt width
+                        canvas[(cLine*lWidth)+charCount]['text'] = char
+                    charCount += 1
 
 # handle name and child window to save a file
 def configSave():
@@ -105,7 +133,6 @@ def commitSave(fname, child):
             fo.write("\n")
          cCanvasCount += 1
       messagebox.showinfo(title="Success", message="Successfully saved file!")
-      
                   
    except:
       messagebox.showerror(title="Error", message="Could not save file...")
@@ -122,7 +149,7 @@ def commitSave(fname, child):
 menubar = tkinter.Menu(root)
 filemenu = tkinter.Menu(menubar, tearoff=0)
 filemenu.add_command(label="New", command=lambda : resetCanvasSize(widthEntry.get(), heightEntry.get()))
-filemenu.add_command(label="Open", command=None)
+filemenu.add_command(label="Open", command=loadSave)
 filemenu.add_command(label="Save", command=lambda : configSave())
 
 filemenu.add_separator()
@@ -133,7 +160,6 @@ editmenu = tkinter.Menu(menubar, tearoff=0)
 editmenu.add_command(label="Undo", command=None)
 
 filemenu.add_separator()
-
 
 menubar.add_cascade(label="Options", menu=editmenu)
 helpmenu = tkinter.Menu(menubar, tearoff=0)
@@ -186,6 +212,7 @@ label_eraser.config(command = partial(changeCurChar, label_eraser['text']))
 labelframe_changeCanvas = tkinter.LabelFrame(root, text = "Canvas Size", width = 1)
 labelframe_changeCanvas.grid(row = 1, column = 0, sticky = tkinter.NW)
 
+# create input for changing width of canvas
 lWidthSize = tkinter.Label(labelframe_changeCanvas, text="Width")
 lWidthSize.grid(row = 0, column = 0, sticky = tkinter.NW)
 
@@ -193,6 +220,7 @@ widthEntry = tkinter.Entry(labelframe_changeCanvas)
 widthEntry.grid(row = 1, column = 0, sticky = tkinter.NW)
 widthEntry.insert(10, str(lWidth))
 
+# create input for changing height of canvas
 lHeightSize =  tkinter.Label(labelframe_changeCanvas, text="Height")
 lHeightSize.grid(row = 2, column = 0, sticky = tkinter.NW)
 
@@ -200,16 +228,17 @@ heightEntry = tkinter.Entry(labelframe_changeCanvas)
 heightEntry.grid(row = 4, column = 0, sticky = tkinter.NW)
 heightEntry.insert(10, str(lHeight))
 
+# create button for commiting to a change in canvas dimensions 
 canvasResize = tkinter.Button(labelframe_changeCanvas, text="Resize Canvas")
 canvasResize.grid(row = 5, column = 0, sticky = tkinter.NW)
 canvasResize.config(command = lambda : resetCanvasSize(widthEntry.get(), heightEntry.get()))
+
 
 #------------------------------------#
 # Tkinter specific window properties #
 #------------------------------------#
 
 root.title("asciiSketch")
-
 root.minsize(350, 350)
 root.geometry("750x475")
 root.mainloop()
