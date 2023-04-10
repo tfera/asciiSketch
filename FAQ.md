@@ -15,4 +15,4 @@
 
 This project is currently under active development and odd behaviour is expected. I am aware that TCL/tkinter does have differences between Mac OS, Windows, and Linux DEs.
 
-As of now, the projecing is being developed for Windows in mind with better support for non-Windows platforms planned at a future date.
+As of now, the project is being developed for Windows in mind with better support for non-Windows platforms planned at a future date.
