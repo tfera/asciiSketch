@@ -9,7 +9,7 @@
 
 - Change canvas size appropriately when opening a session file of different height and width
 - Ability to open a preset \*.txt file for selectable characters
-- Optimizations for non-windows systems (on mac / certains DEs TCL works and displays differently)
+- Optimizations for non-windows systems (on mac / certain DEs, TCL works and displays differently)
 
 ## There is an issue when performing (...) on (...) platform that breaks my session!
 
